@@ -15,7 +15,7 @@ public class Pixel {
 	public double getTimestamp() {
 		return timestamp;
 	}
-	public String user_hash() {
+	public String getUserHash() {
 		return user_hash;
 	}
 	public int getX() {
