@@ -52,21 +52,32 @@ public class Position_Nodes {
 				//for loop for each pixel in the grid
 				if (matrix[i][j] != null) {
 					//following for loop checks the range of pixels nearby for similarities
-					for (int k = i - range; k <= i + range; k++) {
-						for (int l = j - range; j <= l + range; l++) {
+					ArrayList<Edge> neighbors = checkForNeighbors(matrix[i][j]);
+					for (int k = 0; k < neighbors.size(); k++) {
+						edges.addEdge(neighbors.get(k));
+					}
+					matrix[i][j].neighbors = neighbors;
+				}
+			}
+		}
+	}
 
-							if (k > 0 && k < 999 && l > 0 && l < 999 && k != i && l != j) { //accounts for boundary and self edges
-								if (matrix[k][l] != null && matrix[k][l].p.getColor() == matrix[i][j].p.getColor()) {
-									Edge e = new Edge(matrix[i][j], matrix[k][l], 0);
-									matrix[i][j].neighbors.add(e);
-									edges.addEdge(e);
-								}
-							}
-						}
+	private ArrayList<Edge> checkForNeighbors(Node n) {
+		ArrayList<Edge> neighbors = new ArrayList<Edge>();
+		int x = n.p.getX();
+		int y = n.p.getY();
+		for (int k = x - range; k <= x + range; k++) {
+			for (int l = y - range; l <= y + range; l++) {
+
+				if (k > -1 && k < 1000 && l > -1 && l < 1000 && k != x && l != y) { //accounts for boundary and self edges
+					if (matrix[k][l] != null && matrix[k][l].p.getColor() == n.p.getColor()) {
+						Edge e = new Edge(n, matrix[k][l], 0);
+						neighbors.add(e);
 					}
 				}
 			}
 		}
+		return neighbors;
 	}
 
 	public int getMinX() {

@@ -11,15 +11,15 @@ public class Edge {
 		node2 = q;
 	}
 
-	private double getWeight() {
+	public double getWeight() {
 		return weight;
 	}
 
-	private Node getNode1() {
+	public Node getNode1() {
 		return node1;
 	}
 
-	private Node getNode2() {
+	public Node getNode2() {
 		return node2;
 	}
 

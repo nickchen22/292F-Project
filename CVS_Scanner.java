@@ -29,6 +29,7 @@ public class CVS_Scanner {
 			addPixelToStructures(pixel);
 		}
 
+		createStructureEdges();
 
 		scanner.close();
 	}
@@ -44,5 +45,9 @@ public class CVS_Scanner {
 
 	private static void printPixel(Pixel p) {
 		System.out.println(p.getTimestamp()+","+p.getUserHash()+","+p.getX()+","+p.getY()+","+p.getColor());
+	}
+
+	private static void createStructureEdges() {
+		positions.createEdges();
 	}
 }
