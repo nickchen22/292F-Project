@@ -14,10 +14,21 @@ public class Edge_Structure {
 
 	public void addEdge(Edge e) {
 		edges.add(e);
+		printEdge(e);
 	}
 
 	public void sortByWeight() {
 		;
+	}
+
+	private void printEdge(Edge e) {
+		printPixel(e.getNode1().p);
+		System.out.println("CONNECTED TO");
+		printPixel(e.getNode2().p);
+	}
+
+	private void printPixel(Pixel p) {
+		System.out.println(p.getTimestamp()+","+p.getUserHash()+","+p.getX()+","+p.getY()+","+p.getColor());
 	}
 
 
