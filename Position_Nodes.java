@@ -54,12 +54,15 @@ public class Position_Nodes {
 					//following for loop checks the range of pixels nearby for similarities
 					ArrayList<Edge> neighbors = checkForNeighbors(matrix[i][j]);
 					for (int k = 0; k < neighbors.size(); k++) {
-						edges.addEdge(neighbors.get(k));
+						Node two = neighbors.get(k).getNode2();	
+						if (noExistingEdge(matrix[i][j], two))
+							edges.addEdge(neighbors.get(k));
 					}
 					matrix[i][j].neighbors = neighbors;
 				}
 			}
 		}
+		System.out.println(edges.getTotal());
 	}
 
 	private ArrayList<Edge> checkForNeighbors(Node n) {
@@ -78,6 +81,16 @@ public class Position_Nodes {
 			}
 		}
 		return neighbors;
+	}
+
+	private boolean noExistingEdge(Node check, Node alreadyExists) {
+		for (int i = 0; i < alreadyExists.neighbors.size(); i++) {
+			Node one = alreadyExists.neighbors.get(i).getNode1();	
+			Node two = alreadyExists.neighbors.get(i).getNode2();
+			if (check == one || check == two)
+				return false;
+		}
+		return true;
 	}
 
 	public int getMinX() {
