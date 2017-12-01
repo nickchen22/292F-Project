@@ -1,10 +1,11 @@
+
 public class Edge {
 
 	private double weight;
-	private Pixel node1;
-	private Pixel node2;
+	private Node node1;
+	private Node node2;
 
-	public Edge(Pixel p, Pixel q, double w) {
+	public Edge(Node p, Node q, double w) {
 		weight = w;
 		node1 = p;
 		node2 = q;
@@ -14,11 +15,11 @@ public class Edge {
 		return weight;
 	}
 
-	private Pixel getNode1() {
+	private Node getNode1() {
 		return node1;
 	}
 
-	private Pixel getNode2() {
+	private Node getNode2() {
 		return node2;
 	}
 

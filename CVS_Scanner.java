@@ -29,8 +29,6 @@ public class CVS_Scanner {
 			addPixelToStructures(pixel);
 		}
 
-		System.out.println(positions.getTotalNodes());
-
 
 		scanner.close();
 	}
