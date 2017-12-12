@@ -113,4 +113,19 @@ public class Position_Nodes {
 		return total_nodes;
 	}
 
+	public ArrayList<UserEdge> getUserNeighbors(int x, int y) {
+
+		Node n = matrix[x][y];
+		ArrayList<UserEdge> neighbors = new ArrayList<UserEdge>();
+
+		for (Edge e: n.neighbors) {
+			Node neighbor = e.getNode2();
+
+			UserEdge edge = new UserEdge(neighbor.p.getUserHash(), 0);
+			neighbors.add(edge);
+		}
+
+		return neighbors;
+	}
+
 }

@@ -1,7 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-import javafx.util.*;
+//import javafx.util.*;
 import java.util.*;
 
 public class CVS_Scanner {
