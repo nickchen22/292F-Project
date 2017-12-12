@@ -1,6 +1,8 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import javafx.util.*;
+import java.util.*;
 
 public class CVS_Scanner {
 
@@ -11,9 +13,12 @@ public class CVS_Scanner {
 
 
 	public static void main(String[] args) throws FileNotFoundException {
-		Scanner scanner = new Scanner(new File("results-20171120-162403.csv"));
+		Scanner scanner = new Scanner(new File("100x100_427-527.csv"));
 		scanner.useDelimiter(",|\\n");
 		String categories[] = new String[5];
+		Map<String, Map<String, List<String>>> userdata = new HashMap<String, Map<String, List<String>>>();
+
+
 		for (int i= 0; i < 5; i++) {
 			categories[i] = scanner.next(); //eats description first line
 		}
@@ -25,6 +30,18 @@ public class CVS_Scanner {
 			for (int i = 0; i < 5; i++) {
 				info[i] = scanner.next();
 			}
+			Map<String, List<String>> innerMap = new HashMap<String, List<String>>();
+			List<String> x_y_color = new ArrayList<String>();
+			x_y_color.add(info[2]);
+			x_y_color.add(info[3]);
+			x_y_color.add(info[4]);
+
+			innerMap.put(info[0],x_y_color);
+			userdata.put(info[1], innerMap);
+
+			String action = info[2] + "/" + info[3] + "/" + info[4];
+			//UserData.put(info[1], info[0], action);
+
 			Pixel pixel = new Pixel(Double.parseDouble(info[0]), info[1], Integer.parseInt(info[2]), Integer.parseInt(info[3]), Integer.parseInt(info[4]));
 			addPixelToStructures(pixel);
 		}
