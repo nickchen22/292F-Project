@@ -16,8 +16,12 @@ public class CVS_Scanner {
 		Scanner scanner = new Scanner(new File("100x100_427-527.csv"));
 		scanner.useDelimiter(",|\\n");
 		String categories[] = new String[5];
+		List<String> Namelist = new ArrayList<String>();
+		List<String> Timelist = new ArrayList<String>();
 
-		Map<String, Map<String, List<String>>> userdata = new HashMap<String, Map<String, List<String>>>();
+		Map<String, Map<String, List<String>>> Usermap = new HashMap<String, Map<String, List<String>>>();
+		Map<String, Map<String, ArrayList<UserEdge>>> EdgeMap = new HashMap<String, Map<String, ArrayList<UserEdge>>>();
+
 
 		for (int i= 0; i < 5; i++) {
 			categories[i] = scanner.next(); //eats description first line
@@ -30,14 +34,28 @@ public class CVS_Scanner {
 			for (int i = 0; i < 5; i++) {
 				info[i] = scanner.next();
 			}
-			Map<String, List<String>> innerMap = new HashMap<String, List<String>>();
+
+			Namelist.add(info[1]);
+
+			if(!Timelist.contains(info[0])){
+				Timelist.add(info[0]);
+			}
+
+			Map<String, List<String>> level1map = new HashMap<String, List<String>>();
 			List<String> x_y_color = new ArrayList<String>();
 			x_y_color.add(info[2]);
 			x_y_color.add(info[3]);
 			x_y_color.add(info[4]);
 
-			innerMap.put(info[0],x_y_color);
-			userdata.put(info[1], innerMap);
+			if(Usermap.containsKey(info[1])){
+				Map<String, List<String>> temp = Usermap.get(info[1]);
+				temp.put(info[0],x_y_color);
+			}
+			else{
+				level1map.put(info[0],x_y_color);
+				Usermap.put(info[1], level1map);
+			}
+			
 
 
 			String action = info[2] + "/" + info[3] + "/" + info[4];
@@ -48,6 +66,23 @@ public class CVS_Scanner {
 		}
 
 		createStructureEdges();
+
+
+		// Store all related edges according to each user and each timestamp for the user
+		for(int i = 0; i <= Namelist.size(); i++){
+			Map<String, List<String>> temp = Usermap.get(Namelist.get(i));
+			for(int j = 0; j<= Timelist.size(); j++){
+				if(temp.containsKey(Timelist.get(j))){
+					int x = Integer.parseInt((temp.get(Timelist.get(j))).get(0));
+					int y = Integer.parseInt((temp.get(Timelist.get(j))).get(1));
+					Map<String, ArrayList<UserEdge>> temp1 = new HashMap<String, ArrayList<UserEdge>>();
+					temp1.put(Timelist.get(j), positions.getUserNeighbors(x, y));
+					EdgeMap.put(Namelist.get(i), temp1);
+				}
+			}
+		}
+
+
 
 		scanner.close();
 	}
