@@ -18,7 +18,6 @@ public class CVS_Scanner {
 		String categories[] = new String[5];
 
 		Map<String, Map<String, List<String>>> userdata = new HashMap<String, Map<String, List<String>>>();
-		Map<String, ArrayList<UserEdge>> EdgeHashMap = new HashMap<String,ArrayList<UserEdge>>();
 
 		for (int i= 0; i < 5; i++) {
 			categories[i] = scanner.next(); //eats description first line
@@ -40,8 +39,6 @@ public class CVS_Scanner {
 			innerMap.put(info[0],x_y_color);
 			userdata.put(info[1], innerMap);
 
-
-			EdgeHashMap.put(info[0], positions.getUserNeighbors(Integer.parseInt(info[2]), Integer.parseInt(info[3])));
 
 			String action = info[2] + "/" + info[3] + "/" + info[4];
 			//UserData.put(info[1], info[0], action);
