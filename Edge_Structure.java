@@ -15,7 +15,7 @@ public class Edge_Structure {
 
 	public void addEdge(Edge e) {
 		edges.add(e);
-		printEdge(e);
+		//printEdge(e);
 		total_edges++;
 	}
 

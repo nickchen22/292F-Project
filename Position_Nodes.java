@@ -13,14 +13,14 @@ public class Position_Nodes {
 
 	private int range;
 
-	public Position_Nodes(int x_length, int y_length) {
+	public Position_Nodes(int x_length, int y_length, int range) {
 		matrix = new Node[x_length][y_length];
 		min_x = 999;
 		min_y = 999;
 		max_x = 0;
 		max_y = 0;
 		total_nodes = 0;
-		range = 1;
+		this.range = range;
 		edges = new Edge_Structure(this);
 	}
 
@@ -62,7 +62,7 @@ public class Position_Nodes {
 				}
 			}
 		}
-		System.out.println(edges.getTotal());
+		//System.out.println(edges.getTotal());
 	}
 
 	private ArrayList<Edge> checkForNeighbors(Node n) {
