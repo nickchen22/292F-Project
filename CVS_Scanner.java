@@ -19,7 +19,6 @@ public class CVS_Scanner {
 
 		for (File file : listOfFiles) {
 		    if (file.isFile()) {
-		    	algs.writeToFile("File: " + file.getName());
     			positions = new Position_Nodes(1000, 1000, 1);
 		    	Scanner scanner = new Scanner(file);
 		    	scanner.useDelimiter(",|\\n");
@@ -87,11 +86,12 @@ public class CVS_Scanner {
 							}
 						}
 					}
-					algs.addGraph(Namelist, Timelist, EdgeMap);
+					algs.addGraph(file.getName(), Namelist, Timelist, EdgeMap);
 				}
 				scanner.close();
 		    }
 		}
+		algs.analysis();
 		algs.shutdown();
 	}
 
