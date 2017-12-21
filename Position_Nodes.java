@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Position_Nodes {
 
 
-	public Node matrix[][];
+	public ArrayList<Node> matrix[][];
 	private int min_x;
 	private int max_x;
 	private int min_y;
@@ -14,7 +14,7 @@ public class Position_Nodes {
 	private int range;
 
 	public Position_Nodes(int x_length, int y_length, int range) {
-		matrix = new Node[x_length][y_length];
+		matrix = new ArrayList[x_length][y_length];
 		min_x = 999;
 		min_y = 999;
 		max_x = 0;
@@ -29,7 +29,10 @@ public class Position_Nodes {
 		int y_coordinate = p.getY();
 
 		Node node = new Node(p);
-		matrix[x_coordinate][y_coordinate] = node;
+		if (matrix[x_coordinate][y_coordinate] == null) {
+			matrix[x_coordinate][y_coordinate] = new ArrayList<Node>();
+		}
+		matrix[x_coordinate][y_coordinate].add(node);
 
 		//limits scope of the area by the given points
 		//worst case results in computing over entire canvas
@@ -52,13 +55,15 @@ public class Position_Nodes {
 				//for loop for each pixel in the grid
 				if (matrix[i][j] != null) {
 					//following for loop checks the range of pixels nearby for similarities
-					ArrayList<Edge> neighbors = checkForNeighbors(matrix[i][j]);
-					for (int k = 0; k < neighbors.size(); k++) {
-						Node two = neighbors.get(k).getNode2();	
-						if (noExistingEdge(matrix[i][j], two))
-							edges.addEdge(neighbors.get(k));
+					for (Node n : matrix[i][j]) {
+						ArrayList<Edge> neighbors = checkForNeighbors(n);
+						for (int k = 0; k < neighbors.size(); k++) {
+							Node two = neighbors.get(k).getNode2();	
+							if (noExistingEdge(n, two))
+								edges.addEdge(neighbors.get(k));
+						}
+						n.neighbors = neighbors;
 					}
-					matrix[i][j].neighbors = neighbors;
 				}
 			}
 		}
@@ -72,10 +77,17 @@ public class Position_Nodes {
 		for (int k = x - range; k <= x + range; k++) {
 			for (int l = y - range; l <= y + range; l++) {
 
-				if (k > -1 && k < 1000 && l > -1 && l < 1000 && k != x && l != y) { //accounts for boundary and self edges
-					if (matrix[k][l] != null && matrix[k][l].p.getColor() == n.p.getColor()) {
-						Edge e = new Edge(n, matrix[k][l], 0);
-						neighbors.add(e);
+				if (k > -1 && k < 1000 && l > -1 && l < 1000) { //accounts for boundary
+					if (matrix[k][l] != null) {
+						for (Node adjacent : matrix[k][l]) {
+							double time1 = n.p.getTimestamp();
+							double time2 = adjacent.p.getTimestamp();
+							double range = 1.44 * Math.pow(10, 7);
+							if (time1 != time2 && Math.abs(time1-time2) < range && n.p.getColor() == adjacent.p.getColor()) {
+								Edge e = new Edge(n, adjacent, 0);
+								neighbors.add(e);
+							}
+						}
 					}
 				}
 			}
@@ -113,9 +125,13 @@ public class Position_Nodes {
 		return total_nodes;
 	}
 
-	public ArrayList<UserEdge> getUserNeighbors(int x, int y) {
+	public ArrayList<UserEdge> getUserNeighbors(int x, int y, double time) {
 
-		Node n = matrix[x][y];
+		Node n = matrix[x][y].get(0);
+		for (Node node : matrix[x][y]) {
+			if (node.p.getTimestamp() == time) 
+				n = node;
+		}
 		ArrayList<UserEdge> neighbors = new ArrayList<UserEdge>();
 
 		for (Edge e: n.neighbors) {
